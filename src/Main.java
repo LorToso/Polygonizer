@@ -16,15 +16,18 @@ public class Main {
         } catch (IOException ignored) {
         }
 
+        Polygon polygon = Polygonizer.CreatePolygonFromImage(img, 8);
+
+        //BufferedImage bufferedImage = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        img.getGraphics().setColor(Color.BLUE);
+        //img.getGraphics().drawPolygon(polygon);
+
         JFrame frame = new JFrame();
         frame.getContentPane().setLayout(new FlowLayout());
         frame.getContentPane().add(new JLabel(new ImageIcon(img)));
         frame.pack();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-
-        Polygon polygon = Polygonizer.CreatePolygonFromImage(img);
-
-
 
     }
 }
