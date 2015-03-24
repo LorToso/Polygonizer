@@ -7,6 +7,7 @@ import java.awt.image.BufferedImage;
 public class Polygonizer {
 
     private static final int DEFAULT_POINT_COUNT = 5;
+    private static double threshAngle = 0;
     public static Polygon CreatePolygonFromImage(BufferedImage inputImage)
     {
         return CreatePolygonFromImage(inputImage, DEFAULT_POINT_COUNT);
@@ -14,22 +15,56 @@ public class Polygonizer {
 
     public static Polygon CreatePolygonFromImage(BufferedImage inputImage, int pointCount)
     {
+        threshAngle = Math.atan((inputImage.getHeight()/2.0)/(inputImage.getWidth()/2.0));
+
         double[] vectorAngles = generateVectorAngles(pointCount);
         Point[] farestPointPositions = generateFarestPointPositions(vectorAngles, new Point(inputImage.getWidth(), inputImage.getHeight()));
 
-        Polygon polygon = new Polygon();
 
-        for (Point farestPointPosition : farestPointPositions) {
+        /*for(int u=0; u<inputImage.getHeight(); u++)
+        {
+            for (int i = 0; i < inputImage.getWidth(); i++)
+            {
+                int a = getAlphaAt(inputImage, i, u);
+                String as = "" + a;
+                if(as.length()==1)
+                    as += "00";
+                else if(as.length()==2)
+                    as += "0";
+
+                System.out.print(as);
+            }
+            System.out.println();
+        }*/
+
+        for (int i=0; i<farestPointPositions.length; i++) {
+            Point farestPointPosition = farestPointPositions[i];
+            double angle = vectorAngles[i];
+
             System.out.println("Start X: " + farestPointPosition.x + " | Y: " + farestPointPosition.y);
+            System.out.println("Angle: " + angle);
 
-            inputImage.getGraphics().setColor(Color.RED);
-            inputImage.getGraphics().drawRect(farestPointPosition.x, farestPointPosition.y, 2,2);
 
             MovePointTowardsMid(farestPointPosition, inputImage);
-            polygon.addPoint(farestPointPosition.x, farestPointPosition.y);
+
             System.out.println("End X: " + farestPointPosition.x + " | Y: " + farestPointPosition.y);
+            System.out.println();
         }
-        return polygon;
+
+        int[] xPoints = new int[pointCount];
+        int[] yPoints = new int[pointCount];
+
+        Graphics g = inputImage.getGraphics();
+        g.setColor(Color.BLUE);
+
+        for(int i=0; i< pointCount; i++)
+        {
+            xPoints[i] = farestPointPositions[i].x;
+            yPoints[i] = farestPointPositions[i].y;
+            g.drawRect(farestPointPositions[i].x, farestPointPositions[i].y, 2,2);
+        }
+
+        return new Polygon(xPoints,yPoints,pointCount);
     }
 
     private static void MovePointTowardsMid(Point farestPointPosition, BufferedImage inputImage) {
@@ -68,12 +103,13 @@ public class Polygonizer {
             int sector = getSpecialSector(angle, imageSize);
             farestPoints[i] = new Point();
 
-            angle -= Math.PI/2*sector;
+            if(sector < 4)
+            angle -= Math.PI/2*(sector);
 
             switch (sector)
             {
                 case 0:
-                    farestPoints[i].x = imageCenter.x + (int) (Math.atan(angle)*imageCenter.y);
+                    farestPoints[i].x = imageCenter.x + (int) (Math.atan(angle)*imageCenter.x);
                     farestPoints[i].y = 0;
                     break;
                 case 1:
@@ -81,12 +117,16 @@ public class Polygonizer {
                     farestPoints[i].y = imageCenter.y + (int) (Math.atan(angle)*imageCenter.y);
                     break;
                 case 2:
-                    farestPoints[i].x = imageCenter.x + (int) (Math.atan(angle)*imageCenter.x);
+                    farestPoints[i].x = imageCenter.x - (int) (Math.atan(angle)*imageCenter.x);
                     farestPoints[i].y = imageSize.y-1;
                     break;
                 case 3:
                     farestPoints[i].x = 0;
-                    farestPoints[i].y = imageCenter.y + (int) (Math.atan(angle)*imageCenter.y) ;
+                    farestPoints[i].y = imageCenter.y - (int) (Math.atan(angle)*imageCenter.y) ;
+                    break;
+                case 4:
+                    farestPoints[i].x = imageCenter.x - (int) (Math.atan(Math.PI*2-angle)*imageCenter.x);
+                    farestPoints[i].y = 0 ;
                     break;
             }
 
@@ -110,13 +150,11 @@ public class Polygonizer {
     }
     private static boolean isTransparentAt(BufferedImage image, Point point)
     {
-        System.out.println("Alpha: " + getAlphaAt(image, point.x, point.y));
+        //System.out.println("Alpha: " + getAlphaAt(image, point.x, point.y));
         return getAlphaAt(image, point.x, point.y) == 0 ;
     }
     private static int getSpecialSector(double angle, Point imageSize)
     {
-        double threshAngle = Math.atan((imageSize.y/2.0)/(imageSize.x/2.0));
-
         if(angle <= threshAngle)
             return 0;
         if(angle <= Math.PI/2 + threshAngle)
@@ -125,6 +163,6 @@ public class Polygonizer {
             return 2;
         if(angle <= 3*Math.PI/2 + threshAngle)
             return 3;
-        return 0;
+        return 4;
     }
 }

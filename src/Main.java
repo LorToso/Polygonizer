@@ -16,15 +16,23 @@ public class Main {
         } catch (IOException ignored) {
         }
 
-        Polygon polygon = Polygonizer.CreatePolygonFromImage(img, 8);
+        Polygon polygon = Polygonizer.CreatePolygonFromImage(img, 1000);
 
         //BufferedImage bufferedImage = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
-        img.getGraphics().setColor(Color.BLUE);
-        //img.getGraphics().drawPolygon(polygon);
+        Graphics g2 = img.getGraphics();
+        g2.setColor(Color.BLUE);
+        g2.drawPolygon(polygon);
+
+        BufferedImage bufferedImage = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
+        Graphics g =bufferedImage.getGraphics();
+        g.setColor(Color.RED);
+        g.fillRect(0, 0, img.getWidth(), img.getHeight());
+        g.drawImage(img, 0, 0, null);
+
 
         JFrame frame = new JFrame();
         frame.getContentPane().setLayout(new FlowLayout());
-        frame.getContentPane().add(new JLabel(new ImageIcon(img)));
+        frame.getContentPane().add(new JLabel(new ImageIcon(bufferedImage)));
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
