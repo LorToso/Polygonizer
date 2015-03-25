@@ -5,9 +5,6 @@ package filters;
  */
 public class Red extends Channel {
 
-    private final int threshold;
-    private final Operator operator;
-
     private Red(int threshold, Operator operator)
     {
         this.operator = operator;
@@ -18,21 +15,25 @@ public class Red extends Channel {
     {
         return new Red(threshold, Operator.EQUALS);
     }
-
-    private int getRedChannel(int argbValue)
+    public static Red greater(int threshold)
     {
-        return ((argbValue & 0x00FF0000) >> 16) & 0x000000FF;
+        return new Red(threshold, Operator.GREATER);
+    }
+    public static Red less(int threshold)
+    {
+        return new Red(threshold, Operator.LESS);
+    }
+    public static Red greaterOrEqual(int threshold)
+    {
+        return new Red(threshold, Operator.GREATER_OR_EQUAL);
+    }
+    public static Red lessOrEqual(int threshold)
+    {
+        return new Red(threshold, Operator.LESS_OR_EQUAL);
     }
 
     @Override
-    protected boolean isFiltered(int argbValue) {
-        int channel = getRedChannel(argbValue);
-        switch (operator)
-        {
-            case EQUALS:
-                return channel == threshold;
-            default:
-                return false;
-        }
+    protected int getChannel(int argbValue) {
+        return ((argbValue & 0x00FF0000) >> 16) & 0x000000FF;
     }
 }

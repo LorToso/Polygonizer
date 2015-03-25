@@ -22,7 +22,7 @@ class Main {
         Polygon polygon = PolygonBuilder.CreatePolygonFor(img)
                                         .withPointCountOf(1000)
                                         .filterWhere(Alpha.equals(255))
-                                        .drawPoints()
+                                        //.drawPoints()
                                         .build();
 
         drawImage(img, polygon);

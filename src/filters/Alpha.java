@@ -2,9 +2,6 @@ package filters;
 
 public class Alpha extends Channel{
 
-    private final int threshold;
-    private final Operator operator;
-
     private Alpha(int threshold, Operator operator)
     {
         this.operator = operator;
@@ -15,21 +12,26 @@ public class Alpha extends Channel{
     {
         return new Alpha(threshold, Operator.EQUALS);
     }
+    public static Alpha greater(int threshold)
+    {
+        return new Alpha(threshold, Operator.GREATER);
+    }
+    public static Alpha less(int threshold)
+    {
+        return new Alpha(threshold, Operator.LESS);
+    }
+    public static Alpha greaterOrEqual(int threshold)
+    {
+        return new Alpha(threshold, Operator.GREATER_OR_EQUAL);
+    }
+    public static Alpha lessOrEqual(int threshold)
+    {
+        return new Alpha(threshold, Operator.LESS_OR_EQUAL);
+    }
 
-    private int getAlphaChannel(int argbValue)
+    protected int getChannel(int argbValue)
     {
         return ((argbValue & 0xFF000000) >> 24) & 0x000000FF;
     }
 
-    @Override
-    protected boolean isFiltered(int argbValue) {
-        int channel = getAlphaChannel(argbValue);
-        switch (operator)
-        {
-            case EQUALS:
-                return channel == threshold;
-            default:
-                return false;
-        }
-    }
 }
