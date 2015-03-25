@@ -3,7 +3,7 @@ package filters;
 /**
  * This was created by lorenzo toso on 25.03.15.
  */
-public abstract class Channel implements Filter{
+public abstract class Channel extends Filter{
     int threshold;
     Operator operator;
 
@@ -27,7 +27,7 @@ public abstract class Channel implements Filter{
                 return false;
         }
     }
-    public boolean isFiltered(int argbValue) {
+    public boolean filters(int argbValue) {
         int channel = getChannel(argbValue);
         return filterChannel(channel);
     }

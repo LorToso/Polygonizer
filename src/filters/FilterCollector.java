@@ -19,7 +19,7 @@ public class FilterCollector implements Iterable<Filter> {
     {
         for (Filter filter : allFilters)
         {
-            if(filter.isFiltered(argbValue))
+            if(filter.filters(argbValue))
                 return true;
         }
         return false;

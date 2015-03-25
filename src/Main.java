@@ -1,4 +1,3 @@
-import filters.And;
 import filters.Blue;
 import filters.Green;
 import filters.Red;
@@ -26,10 +25,10 @@ class Main {
         BuildablePolygon buildablePolygon = CreatePolygon
                 .of(img1)
                 .withPointCountOf(1000)
-                .filterWhere(new And(Red.notEquals(255), Green.notEquals(255), Blue.notEquals(255)));
+                .filterWhere(Red.notEquals(255).and(Green.notEquals(255)).and(Blue.notEquals(255)));
 
         Polygon polygon1 = buildablePolygon
-                        //.drawPoints()
+                 .drawPoints()
                 .build();
 
         drawImage(img1, polygon1);
