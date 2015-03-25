@@ -15,6 +15,10 @@ public class Red extends Channel {
     {
         return new Red(threshold, Operator.EQUALS);
     }
+    public static Red notEquals(int threshold)
+    {
+        return new Red(threshold, Operator.NOT_EQUAL);
+    }
     public static Red greater(int threshold)
     {
         return new Red(threshold, Operator.GREATER);

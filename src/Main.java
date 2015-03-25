@@ -1,6 +1,9 @@
+import filters.And;
+import filters.Blue;
+import filters.Green;
+import filters.Red;
 import poligonizer.BuildablePolygon;
 import poligonizer.CreatePolygon;
-import filters.Alpha;
 
 import javax.imageio.ImageIO;
 import javax.swing.*;
@@ -15,28 +18,21 @@ import java.io.IOException;
 class Main {
     public static void main(String[] args) {
         BufferedImage img1 = null;
-        BufferedImage img2 = null;
         try {
-            img1 = ImageIO.read(new File("WeirdShape.png"));
-            img2 = ImageIO.read(new File("circle.png"));
+            img1 = ImageIO.read(new File("star.png"));
         } catch (IOException ignored) {
         }
 
         BuildablePolygon buildablePolygon = CreatePolygon
                 .of(img1)
                 .withPointCountOf(1000)
-                .filterWhere(Alpha.equals(255));
+                .filterWhere(new And(Red.notEquals(255), Green.notEquals(255), Blue.notEquals(255)));
 
         Polygon polygon1 = buildablePolygon
                         //.drawPoints()
                 .build();
-        Polygon polygon2 = buildablePolygon.changeImageTo(img2)
-                        //.drawPoints()
-                .build();
 
         drawImage(img1, polygon1);
-        drawImage(img2, polygon2);
-
     }
 
     private static void drawImage(BufferedImage img, Polygon polygon) {

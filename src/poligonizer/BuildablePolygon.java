@@ -1,7 +1,7 @@
 package poligonizer;
 
-import filters.Channel;
-import filters.ChannelFilter;
+import filters.FilterCollector;
+import filters.Filter;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -14,7 +14,7 @@ public class BuildablePolygon {
 
     private BufferedImage image;
     private int pointCount = DEFAULT_APPROXIMATION_POINT_COUNT;
-    private final ChannelFilter filter = new ChannelFilter();
+    private final FilterCollector filter = new FilterCollector();
     private boolean drawPoints = false;
 
     public BuildablePolygon(BufferedImage image) {
@@ -32,9 +32,9 @@ public class BuildablePolygon {
 
         return polygon;
     }
-    public BuildablePolygon filterWhere(Channel channel)
+    public BuildablePolygon filterWhere(Filter channel)
     {
-        filter.addChannel(channel);
+        filter.addFilter(channel);
         return this;
     }
     public BuildablePolygon drawPoints()

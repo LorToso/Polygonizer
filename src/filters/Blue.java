@@ -15,6 +15,10 @@ public class Blue extends Channel {
     {
         return new Blue(threshold, Operator.EQUALS);
     }
+    public static Blue notEquals(int threshold)
+    {
+        return new Blue(threshold, Operator.NOT_EQUAL);
+    }
     public static Blue greater(int threshold)
     {
         return new Blue(threshold, Operator.GREATER);

@@ -5,6 +5,7 @@ package filters;
  */
 public enum Operator {
     EQUALS,
+    NOT_EQUAL,
     GREATER,
     LESS,
     GREATER_OR_EQUAL,

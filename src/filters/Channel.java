@@ -3,7 +3,7 @@ package filters;
 /**
  * This was created by lorenzo toso on 25.03.15.
  */
-public abstract class Channel {
+public abstract class Channel implements Filter{
     int threshold;
     Operator operator;
 
@@ -13,6 +13,8 @@ public abstract class Channel {
         {
             case EQUALS:
                 return value == threshold;
+            case NOT_EQUAL:
+                return value != threshold;
             case GREATER:
                 return value > threshold;
             case LESS:
@@ -25,7 +27,7 @@ public abstract class Channel {
                 return false;
         }
     }
-    boolean isFiltered(int argbValue) {
+    public boolean isFiltered(int argbValue) {
         int channel = getChannel(argbValue);
         return filterChannel(channel);
     }

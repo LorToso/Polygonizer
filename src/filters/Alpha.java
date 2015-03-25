@@ -12,6 +12,10 @@ public class Alpha extends Channel{
     {
         return new Alpha(threshold, Operator.EQUALS);
     }
+    public static Alpha notEquals(int threshold)
+    {
+        return new Alpha(threshold, Operator.NOT_EQUAL);
+    }
     public static Alpha greater(int threshold)
     {
         return new Alpha(threshold, Operator.GREATER);

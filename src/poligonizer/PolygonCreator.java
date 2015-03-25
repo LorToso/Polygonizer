@@ -1,6 +1,6 @@
 package poligonizer;
 
-import filters.ChannelFilter;
+import filters.FilterCollector;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -13,10 +13,10 @@ class PolygonCreator {
     private final ArrayList<Point> pointsToDraw = new ArrayList<>();
     private final BufferedImage image;
     private final int pointCount;
-    private final ChannelFilter filter;
+    private final FilterCollector filter;
 
 
-    public PolygonCreator(BufferedImage inputImage, int pointCount, ChannelFilter filter)
+    public PolygonCreator(BufferedImage inputImage, int pointCount, FilterCollector filter)
     {
         this.image = inputImage;
         this.pointCount = pointCount;
