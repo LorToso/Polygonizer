@@ -4,10 +4,10 @@ package filters;
  * This was created by lorenzo toso on 25.03.15.
  */
 public abstract class Channel {
-    protected int threshold;
-    protected Operator operator;
+    int threshold;
+    Operator operator;
 
-    protected boolean filterChannel(int value)
+    boolean filterChannel(int value)
     {
         switch (operator)
         {
@@ -25,7 +25,7 @@ public abstract class Channel {
                 return false;
         }
     }
-    protected boolean isFiltered(int argbValue) {
+    boolean isFiltered(int argbValue) {
         int channel = getChannel(argbValue);
         return filterChannel(channel);
     }

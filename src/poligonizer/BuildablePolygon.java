@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 public class BuildablePolygon {
     private static final int DEFAULT_APPROXIMATION_POINT_COUNT = 5;
 
-    private final BufferedImage image;
+    private BufferedImage image;
     private int pointCount = DEFAULT_APPROXIMATION_POINT_COUNT;
     private final ChannelFilter filter = new ChannelFilter();
     private boolean drawPoints = false;
@@ -45,6 +45,11 @@ public class BuildablePolygon {
     public BuildablePolygon withPointCountOf(int pointCount)
     {
         this.pointCount = pointCount;
+        return this;
+    }
+    public BuildablePolygon changeImageTo(BufferedImage image)
+    {
+        this.image = image;
         return this;
     }
 }

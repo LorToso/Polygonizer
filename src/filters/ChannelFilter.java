@@ -18,9 +18,9 @@ public class ChannelFilter {
     {
         for (Channel channel : allChannels)
         {
-            if(!channel.isFiltered(argbValue))
-                return false;
+            if(channel.isFiltered(argbValue))
+                return true;
         }
-        return true;
+        return false;
     }
 }

@@ -1,4 +1,5 @@
-import poligonizer.PolygonBuilder;
+import poligonizer.BuildablePolygon;
+import poligonizer.CreatePolygon;
 import filters.Alpha;
 
 import javax.imageio.ImageIO;
@@ -13,19 +14,28 @@ import java.io.IOException;
  */
 class Main {
     public static void main(String[] args) {
-        BufferedImage img = null;
+        BufferedImage img1 = null;
+        BufferedImage img2 = null;
         try {
-            img = ImageIO.read(new File("WeirdShape.png"));
+            img1 = ImageIO.read(new File("WeirdShape.png"));
+            img2 = ImageIO.read(new File("circle.png"));
         } catch (IOException ignored) {
         }
 
-        Polygon polygon = PolygonBuilder.CreatePolygonFor(img)
-                                        .withPointCountOf(1000)
-                                        .filterWhere(Alpha.equals(255))
-                                        //.drawPoints()
-                                        .build();
+        BuildablePolygon buildablePolygon = CreatePolygon
+                .of(img1)
+                .withPointCountOf(1000)
+                .filterWhere(Alpha.equals(255));
 
-        drawImage(img, polygon);
+        Polygon polygon1 = buildablePolygon
+                        //.drawPoints()
+                .build();
+        Polygon polygon2 = buildablePolygon.changeImageTo(img2)
+                        //.drawPoints()
+                .build();
+
+        drawImage(img1, polygon1);
+        drawImage(img2, polygon2);
 
     }
 
