@@ -12,13 +12,13 @@ public class Main {
     public static void main(String[] args) {
         BufferedImage img = null;
         try {
-            img = ImageIO.read(new File("test.png"));
+            img = ImageIO.read(new File("WeirdShape.png"));
         } catch (IOException ignored) {
         }
 
-        Polygon polygon = Polygonizer.CreatePolygonFromImage(img, 1000);
+        Polygon polygon = Polygonizer.CreatePolygonFromImage(img, 50);
 
-        //BufferedImage bufferedImage = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_INT_ARGB);
+
         Graphics g2 = img.getGraphics();
         g2.setColor(Color.BLUE);
         g2.drawPolygon(polygon);
