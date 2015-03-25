@@ -1,3 +1,6 @@
+import poligonizer.PolygonBuilder;
+import filters.Alpha;
+
 import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
@@ -6,9 +9,9 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by lorenzo on 19.03.15.
+ * Totally created by lorenzo TOSO On 19.03.15.
  */
-public class Main {
+class Main {
     public static void main(String[] args) {
         BufferedImage img = null;
         try {
@@ -16,9 +19,17 @@ public class Main {
         } catch (IOException ignored) {
         }
 
-        Polygon polygon = Polygonizer.CreatePolygonFromImage(img, 50);
+        Polygon polygon = PolygonBuilder.CreatePolygonFor(img)
+                                        .withPointCountOf(1000)
+                                        .filterWhere(Alpha.equals(255))
+                                        .drawPoints()
+                                        .build();
 
+        drawImage(img, polygon);
 
+    }
+
+    private static void drawImage(BufferedImage img, Polygon polygon) {
         Graphics g2 = img.getGraphics();
         g2.setColor(Color.BLUE);
         g2.drawPolygon(polygon);
@@ -36,6 +47,5 @@ public class Main {
         frame.pack();
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-
     }
 }

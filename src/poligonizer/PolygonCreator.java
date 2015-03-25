@@ -1,3 +1,7 @@
+package poligonizer;
+
+import filters.ChannelFilter;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -5,34 +9,38 @@ import java.util.ArrayList;
 /**
  * Created by lorenzo toso on 19.03.15
  */
-public class Polygonizer {
+class PolygonCreator {
+    private final ArrayList<Point> pointsToDraw = new ArrayList<>();
+    private final BufferedImage image;
+    private final int pointCount;
+    private final ChannelFilter filter;
 
-    private static final int DEFAULT_POINT_COUNT = 5;
-    private static ArrayList<Point> pointsToDraw = new ArrayList<>();
 
-    public static Polygon CreatePolygonFromImage(BufferedImage inputImage)
+    public PolygonCreator(BufferedImage inputImage, int pointCount, ChannelFilter filter)
     {
-        return CreatePolygonFromImage(inputImage, DEFAULT_POINT_COUNT);
+        this.image = inputImage;
+        this.pointCount = pointCount;
+        this.filter = filter;
     }
 
-    public static Polygon CreatePolygonFromImage(BufferedImage inputImage, int pointCount)
+
+    public Polygon createPolygon()
     {
-        Point[] approximationPoints = generateBorderPoints(new Point(inputImage.getWidth(), inputImage.getHeight()), pointCount);
+        Point[] approximationPoints = generateBorderPoints(pointCount);
 
         Polygon polygon = new Polygon();
 
         for (Point point : approximationPoints) {
-            MovePointTowardsMid(point, inputImage);
+            MovePointTowardsMid(point);
             polygon.addPoint(point.x, point.y);
         }
-
-        for(Point p : pointsToDraw)
-            drawPoint(inputImage,p);
 
         return polygon;
     }
 
-    private static Point[] generateBorderPoints(Point imageSize, int pointCount) {
+    private Point[] generateBorderPoints(int pointCount) {
+        Point imageSize = new Point(image.getWidth(), image.getHeight());
+
         int circumference = 2*imageSize.x+2*imageSize.y;
         double trackPerSegment = (double)(circumference)/pointCount;
 
@@ -70,10 +78,10 @@ public class Polygonizer {
         return allPoints;
     }
 
-    private static void MovePointTowardsMid(Point point, BufferedImage inputImage) {
-        Point imageCenter = new Point(inputImage.getWidth()/2, inputImage.getHeight()/2);
+    private void MovePointTowardsMid(Point point) {
+        Point imageCenter = new Point(image.getWidth()/2, image.getHeight()/2);
 
-        while(isTransparentAt(inputImage, point))
+        while(!filter.isFiltered(getARGBAt(point)))
         {
             Point xMovement;
             Point yMovement;
@@ -109,8 +117,12 @@ public class Polygonizer {
                 else
                     point.setLocation(diagonalMovement);
             }
-            //pointsToDraw.add(new Point(farestPointPosition));
+            pointsToDraw.add(new Point(point));
         }
+    }
+
+    private int getARGBAt(Point point) {
+        return image.getRGB(point.x, point.y);
     }
 
     private static void drawPoint(BufferedImage inputImage, Point point) {
@@ -119,12 +131,8 @@ public class Polygonizer {
         g.drawRect(point.x, point.y, 2,2);
     }
 
-    private static int getAlphaAt(BufferedImage image, int x, int y)
-    {
-        return (image.getRGB(x,y) & 0xFF000000) >> 24 & 0x000000FF;
-    }
-    private static boolean isTransparentAt(BufferedImage image, Point point)
-    {
-        return getAlphaAt(image, point.x, point.y) == 0 ;
+    public void drawPoints() {
+        for(Point p : pointsToDraw)
+            drawPoint(image, p);
     }
 }
