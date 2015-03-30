@@ -1,6 +1,6 @@
 package poligonizer;
 
-import filters.FilterCollector;
+import poligonizer.filters.FilterCollector;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -23,6 +23,11 @@ class PolygonCreator {
         this.filter = filter;
     }
 
+    private static void drawPoint(BufferedImage inputImage, Point point) {
+        Graphics g = inputImage.getGraphics();
+        g.setColor(Color.BLUE);
+        g.drawRect(point.x, point.y, 2,2);
+    }
 
     public Polygon createPolygon()
     {
@@ -81,7 +86,7 @@ class PolygonCreator {
     private void MovePointTowardsMid(Point point) {
         Point imageCenter = new Point(image.getWidth()/2, image.getHeight()/2);
 
-        while(!filter.isFiltered(getARGBAt(point)))
+        while(!filter.isFiltered(getARGBAt(point)) && imageCenter.distance(point) > 0)
         {
             Point xMovement;
             Point yMovement;
@@ -123,12 +128,6 @@ class PolygonCreator {
 
     private int getARGBAt(Point point) {
         return image.getRGB(point.x, point.y);
-    }
-
-    private static void drawPoint(BufferedImage inputImage, Point point) {
-        Graphics g = inputImage.getGraphics();
-        g.setColor(Color.BLUE);
-        g.drawRect(point.x, point.y, 2,2);
     }
 
     public void drawPoints() {

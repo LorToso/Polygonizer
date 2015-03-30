@@ -1,4 +1,4 @@
-package filters;
+package poligonizer.filters;
 
 /**
  * This was created by lorenzo toso on 25.03.15.

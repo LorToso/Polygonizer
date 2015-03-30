@@ -1,4 +1,4 @@
-package filters;
+package poligonizer.filters;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,7 +19,7 @@ public class FilterCollector implements Iterable<Filter> {
     {
         for (Filter filter : allFilters)
         {
-            if(filter.filters(argbValue))
+            if(filter.isFiltered(argbValue))
                 return true;
         }
         return false;

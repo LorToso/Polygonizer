@@ -1,4 +1,4 @@
-package filters;
+package poligonizer.filters;
 
 public class Alpha extends Channel{
 

@@ -1,7 +1,7 @@
 package poligonizer;
 
-import filters.FilterCollector;
-import filters.Filter;
+import poligonizer.filters.Filter;
+import poligonizer.filters.FilterCollector;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -11,10 +11,9 @@ import java.awt.image.BufferedImage;
  */
 public class BuildablePolygon {
     private static final int DEFAULT_APPROXIMATION_POINT_COUNT = 5;
-
+    private final FilterCollector filter = new FilterCollector();
     private BufferedImage image;
     private int pointCount = DEFAULT_APPROXIMATION_POINT_COUNT;
-    private final FilterCollector filter = new FilterCollector();
     private boolean drawPoints = false;
 
     public BuildablePolygon(BufferedImage image) {

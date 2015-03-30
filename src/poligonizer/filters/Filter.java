@@ -1,4 +1,4 @@
-package filters;
+package poligonizer.filters;
 
 import java.util.ArrayList;
 
@@ -8,7 +8,12 @@ import java.util.ArrayList;
 public abstract class Filter {
     ArrayList<Filter> combinedFilters = new ArrayList<>();
 
-    public abstract boolean filters(int argbValue);
+    public Filter()
+    {
+        combinedFilters.add(this);
+    }
+
+    protected abstract boolean filters(int argbValue);
 
     public Filter and(Filter combinedFilter)
     {
